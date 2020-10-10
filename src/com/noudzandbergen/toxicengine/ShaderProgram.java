@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL46C.*;
 
 public abstract class ShaderProgram {
 
-    private final Shader VS, FS;
+    private final Shader VERTEX_SHADER, FRAGMENT_SHADER;
     private final int ID;
 
     private static ShaderProgram activeProgram;
@@ -20,12 +20,12 @@ public abstract class ShaderProgram {
 
     protected ShaderProgram(Shader vertexShader, Shader fragmentShader) throws Error {
 
-        VS = vertexShader;
-        FS = fragmentShader;
+        VERTEX_SHADER = vertexShader;
+        FRAGMENT_SHADER = fragmentShader;
 
         ID = glCreateProgram();
-        VS.attach(ID);
-        FS.attach(ID);
+        VERTEX_SHADER.attach(ID);
+        FRAGMENT_SHADER.attach(ID);
 
         bindAttributes();
 
@@ -37,8 +37,8 @@ public abstract class ShaderProgram {
 
     public void destroy() {
 
-        VS.detach(ID);
-        FS.detach(ID);
+        VERTEX_SHADER.detach(ID);
+        FRAGMENT_SHADER.detach(ID);
         glDeleteProgram(ID);
 
     }
@@ -53,7 +53,6 @@ public abstract class ShaderProgram {
     protected void load(int location, int value) {
         glProgramUniform1i(ID, location, value);
     }
-
     protected void load(int location, float value) {
         glProgramUniform1f(ID, location, value);
     }

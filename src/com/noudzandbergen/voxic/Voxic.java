@@ -5,16 +5,18 @@ import com.noudzandbergen.toxicengine.Engine;
 public class Voxic {
 
     public final Engine engine;
-
-//    public static final Block AIR;
+    
+    private static final VoxicCoreMod core = new VoxicCoreMod();
 
     public Voxic() {
         engine = new Engine();
     }
 
     public void start() {
-        engine.start();
+        engine.init();
+        engine.debug();
         engine.pushState(new PlayingState(engine));
+        engine.start();
     }
 
     public static void main(String[] args) {

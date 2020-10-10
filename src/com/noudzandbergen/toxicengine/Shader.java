@@ -11,7 +11,7 @@ public class Shader {
     private int uses = 0;
     private final int ID;
 
-    private enum Type {
+    public enum Type {
         VERTEX(GL_VERTEX_SHADER),
         FRAGMENT(GL_FRAGMENT_SHADER),
         TESSELATION_CONTROL(GL_TESS_CONTROL_SHADER),

@@ -3,6 +3,7 @@ package com.noudzandbergen.toxicengine;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL46C;
 
 import java.util.Stack;
 
@@ -27,6 +28,10 @@ public class Engine {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+        glfwWindowHint(GLFW_SAMPLES, 4);
 
     }
 
@@ -39,7 +44,8 @@ public class Engine {
         states.pop().destroy();
     }
 
-    private void init() {
+    public void init() {
+        if (++instances == 1) initGLFW();
 
         window = glfwCreateWindow(1280, 720, "Gamedev is toxic", NULL, NULL);
 
@@ -49,12 +55,19 @@ public class Engine {
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
 
+        GL.createCapabilities();
+
+    }
+
+    public void debug() {
+        GL46C.glDebugMessageCallback((source, type, id, severity, length, message, userParam) -> {
+            System.out.println("GL Debug Message:");
+            System.out.println(message);
+        }, 69);
     }
 
     private void loop() {
         glfwShowWindow(window);
-
-        GL.createCapabilities();
 
         while (!states.isEmpty() && !glfwWindowShouldClose(window)) {
             glfwPollEvents();
@@ -69,8 +82,6 @@ public class Engine {
 
     @SuppressWarnings("ConstantConditions")
     public void start() {
-        if (++instances == 1) initGLFW();
-        init();
         loop();
         glfwDestroyWindow(window);
         if (--instances == 0) {

@@ -15,20 +15,20 @@ public abstract class TransformableShaderProgram extends ShaderProgram implement
 
     @Override
     protected void getUniformLocations() {
-        worldLocation = getUniformLocation("world");
-        viewLocation = getUniformLocation("view");
-        modelLocation = getUniformLocation("model");
+        worldLocation = getUniformLocation("projectionMatrix");
+        viewLocation = getUniformLocation("viewMatrix");
+        modelLocation = getUniformLocation("modelMatrix");
     }
 
-    void setWorldMatrix(Matrix4f worldMatrix) {
+    public void setProjectionMatrix(Matrix4f worldMatrix) {
         load(worldLocation, worldMatrix);
     }
 
-    void setViewMatrix(Matrix4f viewMatrix) {
+    public void setViewMatrix(Matrix4f viewMatrix) {
         load(viewLocation, viewMatrix);
     }
 
-    void setModelMatrix(Matrix4f modelMatrix) {
+    public void setModelMatrix(Matrix4f modelMatrix) {
         load(modelLocation, modelMatrix);
     }
 
